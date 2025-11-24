@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.nonkungch.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    // ถ้ามี Mixin ที่รันได้ทั้ง Server/Client
+  ],
+  "client": [
+    "ItemRendererMixin" // <-- ชื่อ Mixin Class ของเรา
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
