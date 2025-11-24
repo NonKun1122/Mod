@@ -1,4 +1,4 @@
-package com.yourmodid.mixin;
+package com.nonkungch.mixin;
 
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
@@ -8,37 +8,36 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
+// Mixin เข้าสู่คลาส ItemRenderer ซึ่งทำหน้าที่วาดไอเทมในเกม
 @Mixin(ItemRenderer.class)
 public abstract class ItemRendererMixin {
 
     /**
-     * @author Gemini (Based on community performance mods)
-     * @reason ปรับปรุงประสิทธิภาพโดยบังคับให้ค่า renderGlint เป็น false 
-     * เมื่อไอเทมถูกเรนเดอร์ในหน้าจอ GUI/Inventory (โหมด GUI)
+     * @reason Optimizes performance by forcing the renderGlint parameter to false 
+     * when an item is rendered in the GUI (Inventory, Chests).
+     * * เราใช้ ModifyArgs เพื่อแก้ไขพารามิเตอร์ของเมธอด renderItem ก่อนที่มันจะถูกส่งต่อไปยัง
+     * เมธอดที่วาด Glint โดยตรง ซึ่งเป็นสาเหตุหลักของ Lag ในหน้าจอที่มีไอเทม Enchanted เยอะๆ
      */
     @ModifyArgs(
+        // เมธอดที่เราต้องการแก้ไข: renderItem(ItemStack, ModelTransformationMode, boolean, ...)
         method = "renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformationMode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;IILnet/minecraft/client/render/model/BakedModel;)V",
         at = @At(
             value = "INVOKE",
-            // จุดที่ Glint ถูกวาด (ใช้การเรียกเมธอด renderGlint เป็นจุดแทรก)
+            // จุดแทรก: ก่อนที่จะมีการเรียกเมธอดที่ใช้สำหรับวาด Glint
             target = "Lnet/minecraft/client/render/item/ItemRenderer;renderGlint(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/item/ItemStack;I)V"
         )
     )
     private void removeGlintOnGui(Args args) {
-        // พารามิเตอร์ของเมธอด renderItem ที่เราแก้ไข:
-        // Index 0: ItemStack stack
-        // Index 1: ModelTransformationMode renderMode
-        // Index 2: boolean renderGlint (ค่าที่เราต้องการเปลี่ยน)
         
-        ItemStack stack = args.get(0);
-        ModelTransformationMode renderMode = args.get(1);
-        boolean renderGlint = args.get(2);
+        // ดึงพารามิเตอร์ที่ถูกส่งเข้ามาในเมธอด renderItem
+        ItemStack stack = args.get(0);              // พารามิเตอร์ตัวที่ 1 (ItemStack)
+        ModelTransformationMode renderMode = args.get(1); // พารามิเตอร์ตัวที่ 2 (Render Mode)
+        boolean renderGlint = args.get(2);          // พารามิเตอร์ตัวที่ 3 (Boolean for Glint)
         
-        // ตรวจสอบ: ถ้า Glint ถูกเปิดใช้งานอยู่ (renderGlint == true) 
-        //         และไอเทมมี Glint (stack.hasGlint()) 
-        //         และเรากำลังเรนเดอร์ในโหมด GUI (Inventory, Chests)
+        // ตรรกะ: ถ้า Glint ถูกเปิดใช้งาน (true) AND ไอเทมมีการร่ายมนตร์ AND โหมดคือ GUI
         if (renderGlint && stack.hasGlint() && renderMode == ModelTransformationMode.GUI) {
-            // บังคับเปลี่ยนค่า renderGlint (พารามิเตอร์ตัวที่ 3) ให้เป็น false
+            // บังคับเปลี่ยนค่า renderGlint (พารามิเตอร์ตัวที่ 3) ให้เป็น false 
+            // ทำให้ Glint ไม่ถูกวาดเมื่ออยู่ใน Inventory/Chest
             args.set(2, false); 
         }
     }
