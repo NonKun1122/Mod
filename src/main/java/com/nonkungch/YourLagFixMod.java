@@ -4,20 +4,17 @@ import net.fabricmc.api.ClientModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-// ใช้ ClientModInitializer เพราะ Mod นี้ทำงานแค่ฝั่ง Client (ด้านการเรนเดอร์)
+// Mod นี้ใช้ ClientModInitializer เพราะทำงานด้านการเรนเดอร์ (Client-Side)
 public class YourLagFixMod implements ClientModInitializer {
     
-    // ตั้งค่า Logger สำหรับการดีบัก
-    public static final String MOD_ID = "yourlagfixmod";
+    // ตั้งค่า Mod ID และ Logger
+    public static final String MOD_ID = "nonkungch";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     @Override
     public void onInitializeClient() {
-        // โค้ดส่วนใหญ่ของ Mod นี้อยู่ใน Mixin แล้ว
-        // เราเพียงแค่ Log ข้อความยืนยันการโหลด
-        LOGGER.info("Client Lag Fix Mod initialized! Enchantment Glint optimization is active.");
-        
-        // **NOTE:** // หากคุณต้องการใช้ Mod นี้ร่วมกับ Mod ประสิทธิภาพอื่นๆ (Sodium, Lithium) 
-        // ตรวจสอบให้แน่ใจว่าได้ระบุ dependency ใน fabric.mod.json อย่างถูกต้อง
+        // ส่วนใหญ่ของตรรกะแก้ Lag อยู่ใน Mixin
+        // เราเพียงแค่ Log ข้อความเพื่อยืนยันว่า Mod ถูกโหลดสำเร็จ
+        LOGGER.info("NonkungCH Lag Fix Mod: Optimization for Inventory/Chest rendering initialized.");
     }
 }
