@@ -1,7 +1,7 @@
 package com.nonkungch.mixin;
 
 import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.render.model.json.ModelTransformationMode;
+import net.minecraft.item.ModelTransformationMode; // << แก้ไข: เปลี่ยน package
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,12 +19,12 @@ public abstract class ItemRendererMixin {
      * เมธอดที่วาด Glint โดยตรง ซึ่งเป็นสาเหตุหลักของ Lag ในหน้าจอที่มีไอเทม Enchanted เยอะๆ
      */
     @ModifyArgs(
-        // เมธอดที่เราต้องการแก้ไข: renderItem(ItemStack, ModelTransformationMode, boolean, ...)
-        method = "renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformationMode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;IILnet/minecraft/client/render/model/BakedModel;)V",
+        // แก้ไข Method Signature ให้ใช้ Class Path ที่ถูกต้อง
+        method = "renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ModelTransformationMode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;IILnet/minecraft/client/render/model/BakedModel;)V",
         at = @At(
             value = "INVOKE",
-            // จุดแทรก: ก่อนที่จะมีการเรียกเมธอดที่ใช้สำหรับวาด Glint
-            target = "Lnet/minecraft/client/render/item/ItemRenderer;renderGlint(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/item/ItemStack;I)V"
+            // แก้ไข Target: เมธอดสำหรับวาด Glint ใน GUI ถูกเปลี่ยนชื่อในเวอร์ชันใหม่
+            target = "Lnet/minecraft/client/render/item/ItemRenderer;renderGuiGlint(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/item/ItemStack;I)V"
         )
     )
     private void removeGlintOnGui(Args args) {
