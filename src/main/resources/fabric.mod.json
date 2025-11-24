@@ -1,0 +1,39 @@
+{
+	"schemaVersion": 1,
+	"id": "nonkungch", // ⭐️ เปลี่ยนจาก "modid" เป็น "nonkungch"
+	"version": "${version}",
+	"name": "NonkungCH Lag Fix Mod", // ⭐️ ตั้งชื่อ Mod ตามความเหมาะสม
+	"description": "Optimizes item rendering and disables enchantment glint in GUI to reduce inventory and chest lag.",
+	"authors": [
+		"NonkungCH" // ⭐️ เปลี่ยนชื่อผู้เขียน
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/YourUsername/your-lag-fix-repo" // ⭐️ แก้เป็น Repository ของคุณ
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/nonkungch/icon.png", // ⭐️ เปลี่ยน path icon
+	"environment": "client", // ⭐️ เปลี่ยนเป็น 'client' เพราะ Mod นี้ทำงานเฉพาะฝั่งไคลเอนต์
+	"entrypoints": {
+		"client": [ // ⭐️ ใช้เฉพาะ 'client' entrypoint เนื่องจาก Mod ทำงานด้าน rendering
+			"com.nonkungch.YourLagFixMod" // ⭐️ เปลี่ยน Package และ Class Name ให้ตรงกัน
+		]
+	},
+	"mixins": [
+		// ⭐️ เราจะใช้ Mixin Config เดียวสำหรับ Client (ซึ่งเพียงพอสำหรับ Mixin แก้ Lag)
+		{
+			"config": "nonkungch.mixins.json", // ⭐️ ชื่อไฟล์ Mixin JSON ของเรา
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.17.3",
+		"minecraft": "~1.21.9", // ⭐️ ปรับเป็นเวอร์ชัน 1.21.9 ตามที่คุณต้องการ
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"sodium": "*" // เพิ่ม Sodium เป็น Mod ที่แนะนำเพื่อให้ได้ประสิทธิภาพสูงสุด
+	}
+}
+  
