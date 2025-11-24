@@ -1,7 +1,8 @@
 package com.nonkungch.mixin;
 
 import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.item.ModelTransformationMode; // << แก้ไข: เปลี่ยน package
+// ✅ ลองเปลี่ยนไปใช้ Path นี้แทน
+import net.minecraft.client.render.model.ModelTransformationMode; 
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
