@@ -10,8 +10,6 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     steps:
-      - name: clean build
-        uses: ./gradlew clean build --refresh-dependencies
       - name: checkout repository
         uses: actions/checkout@v4
       - name: validate gradle wrapper
@@ -21,6 +19,8 @@ jobs:
         with:
           java-version: '21'
           distribution: 'microsoft'
+      - name: clean build
+        run: ./gradlew clean build --refresh-dependencies
       - name: make gradle wrapper executable
         run: chmod +x ./gradlew
       - name: build
