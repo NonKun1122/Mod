@@ -26,19 +26,23 @@ loom {
 }
 
 dependencies {
-	// To change the versions see the gradle.properties file
+    // ...
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
     
-    // ✅ FIX: เปลี่ยนจาก loom.officialMojangMappings() มาใช้ Yarn Mappings
+    // 🚩 บรรทัดนี้ต้องมีและเรียกใช้ตัวแปรใน gradle.properties
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2" 
     
+	// ...
+    
+    // 🚩 บรรทัดนี้ต้องมีเพื่อให้ Mixin ถูก Process ได้ถูกต้อง
+    include project.dependencies.project(path: ":", configuration: "namedElements")
+	
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     
-    // ✅ FIX: ต้องเพิ่มบรรทัดนี้ เพื่อให้ Loom ประมวลผลโค้ดของ Mod เราเอง (สำคัญต่อ Mixin)
-    include project.dependencies.project(path: ":", configuration: "namedElements")
+    
 }
 
 processResources {
