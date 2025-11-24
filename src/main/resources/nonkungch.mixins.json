@@ -1,13 +1,10 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.nonkungch.mixin",
+  "package": "com.nonkungch.mixin", // ⭐️ Package ที่คุณจะวางไฟล์ Mixin
   "compatibilityLevel": "JAVA_21",
-  "mixins": [
-    // ถ้ามี Mixin ที่รันได้ทั้ง Server/Client
-  ],
   "client": [
-    "ItemRendererMixin" // <-- ชื่อ Mixin Class ของเรา
+    "ItemRendererMixin" // ⭐️ ชื่อ Mixin Class ที่เราใช้ปิด Glint
   ],
   "injectors": {
     "defaultRequire": 1
